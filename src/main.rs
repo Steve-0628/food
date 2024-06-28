@@ -43,12 +43,13 @@ async fn search_jan(Json(payload): Json<AddJanBody>) -> Json<Vec<String>> {
 }
 
 async fn record_food(Json(payload): Json<AddJanBody>) -> Json<Value> {
-    let product_info = search_jan_from_code(payload.jan).await;
+    let product_info = search_jan_from_code(payload.jan.clone()).await;
     if product_info.is_empty(){
         Json(json!({"error": "No results found for JAN code"}))
     } else if product_info.len() == 3 {
         let discord_webhook_json = json!(
             {
+                "content": format!("https://www.janken.jp/goods/jk_catalog_syosai.php?jan={}", payload.jan),
                 "embeds": [
                   {
                     "title": product_info[0],
