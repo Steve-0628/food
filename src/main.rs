@@ -33,10 +33,6 @@ async fn search_jan_from_code(code: String) -> Vec<String> {
     response
 }
 
-async fn jan_search() -> Json<Value> {
-    Json(json!({"data": "test", "res": search_jan_from_code("4987035092216".to_string()).await}))
-}
-
 #[derive(serde::Deserialize, serde::Serialize)]
 struct AddJanBody {
     jan: String
@@ -84,7 +80,6 @@ async fn main() {
     dotenvy::dotenv().expect(".env not found");
     let app = Router::new()
         .route("/", get(plain_text))
-        .route("/jan", get(jan_search))
         .route("/lookup", post(search_jan))
         .route("/record", post(record_food));
 
