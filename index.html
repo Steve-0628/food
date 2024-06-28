@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <input type="text" id="jan"><button onclick="record()">record</button>
+        <div id="out">
+
+        </div>
+        <script>
+
+            const discord_json = {
+                "embeds": [
+                    {
+                    "title": "食品名",
+                    "description": "詳細",
+                    "fields": [],
+                    "author": {
+                        "name": "会社名"
+                    }
+                    }
+                ],
+                "username": "2024-06-28 07:56"
+            }
+            window.addEventListener("keydown", async (e) => {
+                switch (e.key) {
+                    case "Enter":
+                        const res = await fetch("/record", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({jan: document.getElementById("jan").value})})
+                        console.log(res)
+                        const div = document.getElementById("out")
+                        const ellm = document.createElement("div")
+                        ellm.innerText = await res.text()
+                        div.appendChild(ellm)
+                        document.getElementById("jan").value = ""
+                        break;
+                    default:
+                        break;
+                }
+            })
+
+            async function record() {
+                const res = await fetch("/record", { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({jan: document.getElementById("jan").value})})
+                console.log(res)
+            }
+            document.getElementById("jan").focus()
+        </script>
+    </body>
+</html>
